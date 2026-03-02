@@ -17,3 +17,58 @@
     <button class="btn">انتظر ربط الـ API قريباً...</button>
 </body>
 </html>
+<<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WAM | WWE & MMA</title>
+    <style>
+        body { background-color: #050505; color: white; font-family: 'Arial Black', sans-serif; margin: 0; overflow-x: hidden; }
+        
+        /* قسم رومان وسولو */
+        .wwe-section { 
+            height: 80vh; 
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), #000), 
+                        url('https://www.wwe.com/wide/640/4b67307904085f1c9c450530f9a7246e.jpg') no-repeat center top/cover;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+
+        h1 { font-size: 6rem; color: #e00000; margin: 0; text-shadow: 0 0 20px #ff0000; }
+        .tagline { font-size: 1.5rem; background: rgba(224, 0, 0, 0.7); padding: 5px 20px; border-radius: 50px; }
+
+        /* فاصل الصاعقة */
+        .lightning-bolt {
+            height: 150px;
+            background: url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3o2NWl6bzNzaDZ5NjQ4NmpvZjBma2p5NjQ5am9jZmoxbzNzaDZnMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o6Zt8b3hAca9752b0/giphy.gif') center/cover;
+            box-shadow: 0 0 50px #00f3ff;
+            border-top: 3px solid #00f3ff; border-bottom: 3px solid #00f3ff;
+        }
+
+        /* قسم MMA - كونور وماكجريجور أو جون جونز */
+        .mma-section {
+            height: 80vh;
+            background: linear-gradient(to top, rgba(0,0,0,0.5), #000), 
+                        url('https://dmxg5wxfqgb4u.cloudfront.net/styles/background_image_xl/s3/2023-03/UFC_285_Jones_v_Gane_HERO.jpg') no-repeat center/cover;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+
+        .mma-title { color: #00f3ff; font-size: 5rem; text-shadow: 0 0 20px #00f3ff; }
+    </style>
+</head>
+<body>
+
+    <div class="wwe-section">
+        <h1>WAM</h1>
+        <p class="tagline">WWE & THE BLOODLINE EDITION</p>
+    </div>
+
+    <div class="lightning-bolt"></div>
+
+    <div class="mma-section">
+        <h1 class="mma-title">UFC ZONE</h1>
+        <p>تغطية شاملة لقتالات الـ MMA</p>
+    </div>
+
+</body>
+</html>
