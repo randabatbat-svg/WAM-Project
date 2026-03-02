@@ -3,112 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WAM | قاعدة بيانات الأساطير</title>
+    <title>WAM | WWE & NXT Universe</title>
     <style>
-        :root { --main-red: #e00000; --dark-bg: #0a0a0a; --card-bg: #161616; }
-        body { background-color: var(--dark-bg); color: white; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; text-align: center; }
+        :root { --main-red: #e00000; --dark-bg: #050505; --card-bg: #121212; }
+        body { background-color: var(--dark-bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; }
         
-        header { padding: 40px; background: linear-gradient(to bottom, #1a1a1a, #000); border-bottom: 3px solid var(--main-red); }
-        h1 { color: var(--main-red); font-size: 3rem; text-shadow: 0 0 15px #ff0000; margin: 0; }
-        
-        .section-title { margin: 40px 0 20px; color: #fff; font-size: 2rem; border-right: 5px solid var(--main-red); padding-right: 15px; display: inline-block; }
-        
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; padding: 0 10%; margin-bottom: 50px; }
-        
-        .name-btn { 
-            background: var(--card-bg); color: white; border: 1px solid #333; padding: 15px; 
-            border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 1rem; font-weight: bold;
+        /* القسم الأول: الغلاف (الصور اللي رفعتها) */
+        .hero-section { 
+            height: 100vh; 
+            background: linear-gradient(rgba(0,0,0,0.4), #000), url('wwe-bg.jpg') no-repeat center top/cover;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
         }
-        .name-btn:hover { background: var(--main-red); border-color: white; transform: scale(1.05); box-shadow: 0 0 15px var(--main-red); }
+        .hero-section h1 { font-size: 5rem; color: var(--main-red); text-shadow: 0 0 20px #ff0000; margin: 0; }
+        .hero-section p { font-size: 1.5rem; background: var(--main-red); padding: 5px 20px; border-radius: 50px; }
 
-        /* نافذة التفاصيل (Modal) */
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); }
-        .modal-content { 
-            background: var(--card-bg); margin: 10% auto; padding: 30px; border: 2px solid var(--main-red); 
-            width: 80%; max-width: 500px; border-radius: 15px; position: relative;
+        /* فاصل الصاعقة */
+        .lightning {
+            height: 150px;
+            background: url('lightning.gif') center/cover;
+            border-top: 3px solid #00f3ff; border-bottom: 3px solid #00f3ff;
         }
-        .close { position: absolute; left: 20px; top: 10px; color: #fff; font-size: 30px; cursor: pointer; }
-        .modal h2 { color: var(--main-red); margin-top: 0; }
-        .details-list { text-align: right; list-style: none; padding: 0; font-size: 1.2rem; }
-        .details-list li { margin: 10px 0; border-bottom: 1px solid #333; padding-bottom: 5px; }
-        .details-list b { color: var(--main-red); }
+
+        /* قسم قاعدة البيانات */
+        .db-section { padding: 40px 5%; }
+        .category-title { margin: 40px 0 20px; color: #fff; font-size: 1.8rem; border-right: 5px solid var(--main-red); padding-right: 15px; text-align: right; }
+        
+        .names-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+        .name-card { 
+            background: var(--card-bg); color: #ddd; border: 1px solid #222; padding: 12px; 
+            border-radius: 10px; cursor: pointer; transition: 0.3s; font-weight: bold; text-align: center;
+        }
+        .name-card:hover { background: var(--main-red); color: white; transform: translateY(-5px); }
+
+        /* نافذة التفاصيل */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(5px); }
+        .modal-content { 
+            background: #1a1a1a; margin: 10% auto; padding: 30px; border: 2px solid var(--main-red); 
+            width: 85%; max-width: 450px; border-radius: 20px; position: relative; text-align: center;
+        }
+        .close-btn { position: absolute; left: 20px; top: 15px; color: #fff; font-size: 35px; cursor: pointer; }
+        .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #252525; }
+        .info-label { color: var(--main-red); font-weight: bold; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>WAM DB</h1>
-    <p>قاعدة بيانات المصارعين الرسمية - جاك</p>
-</header>
-
-<div class="section-title">🔥 نجوم NXT</div>
-<div id="nxt-men" class="grid-container"></div>
-
-<div class="section-title">👩 سيدات NXT</div>
-<div id="nxt-women" class="grid-container"></div>
-
-<div class="section-title">🏆 أساطير WWE</div>
-<div id="wwe-legends" class="grid-container"></div>
-
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h2 id="m-name">اسم المصارع</h2>
-        <ul class="details-list">
-            <li><b>العمر:</b> <span id="m-age"></span></li>
-            <li><b>الطول:</b> <span id="m-height"></span></li>
-            <li><b>الوزن:</b> <span id="m-weight"></span></li>
-            <li><b>البطولات:</b> <span id="m-titles"></span></li>
-            <li><b>عدد المباريات:</b> <span id="m-matches"></span></li>
-        </ul>
+    <div class="hero-section">
+        <h1>WAM</h1>
+        <p>WWE & THE BLOODLINE EDITION</p>
     </div>
-</div>
 
-<script>
-    // بيانات المصارعين (قاعدة بيانات مصغرة)
-    const playersData = {
-        "Roman Reigns": {age: 38, h: "191 cm", w: "120 kg", t: "Undisputed Champion", m: "1,300+"},
-        "The Rock": {age: 51, h: "196 cm", w: "118 kg", t: "10x WWE Champion", m: "850+"},
-        "John Cena": {age: 46, h: "185 cm", w: "114 kg", t: "16x World Champion", m: "2,200+"},
-        "Carmelo Hayes": {age: 29, h: "178 cm", w: "95 kg", t: "NXT Champion", m: "300+"},
-        "Bron Breakker": {age: 26, h: "183 cm", w: "104 kg", t: "2x NXT Champion", m: "150+"},
-        "The Undertaker": {age: 58, h: "208 cm", w: "136 kg", t: "7x Champion / 25-2 WrestleMania", m: "2,300+"}
-        // يمكن إضافة بقية الـ 50 اسم هنا بنفس الطريقة
-    };
+    <div class="lightning"></div>
 
-    const nxtMen = ["Carmelo Hayes", "Bron Breakker", "Ilja Dragunov", "Trick Williams", "Dijak", "Wes Lee", "Joe Gacy", "Grayson Waller", "Tony D’Angelo", "Nathan Frazer", "Noam Dar", "Dragon Lee", "Baron Corbin", "Apollo Crews", "Von Wagner", "Lexis King", "Oba Femi", "Eddy Thorpe"];
-    const nxtWomen = ["Roxanne Perez", "Tiffany Stratton", "Lyra Valkyria", "Cora Jade", "Gigi Dolin", "Jacy Jayne", "Fallon Henley", "Thea Hail", "Blair Davenport", "Kiana James"];
-    const legends = ["The Rock", "Stone Cold Steve Austin", "The Undertaker", "John Cena", "Triple H", "Shawn Michaels", "Kane", "Hulk Hogan", "Randy Savage", "Bret Hart", "Ric Flair", "Goldberg", "Brock Lesnar", "Edge", "Batista", "The Big Show", "Mick Foley", "Kurt Angle", "Chris Jericho", "Rey Mysterio", "Eddie Guerrero", "Booker T", "Rob Van Dam", "Jeff Hardy", "Matt Hardy", "Ultimate Warrior", "Yokozuna", "Diesel (Kevin Nash)", "Scott Hall", "The Iron Sheik"];
+    <div class="db-section">
+        <div class="category-title">🔥 نجوم NXT</div>
+        <div id="nxt-men-grid" class="names-grid"></div>
 
-    function createButtons(list, containerId) {
-        const container = document.getElementById(containerId);
-        list.forEach(name => {
-            const btn = document.createElement("button");
-            btn.className = "name-btn";
-            btn.innerText = name;
-            btn.onclick = () => showDetails(name);
-            container.appendChild(btn);
-        });
-    }
+        <div class="category-title">👩 سيدات NXT</div>
+        <div id="nxt-women-grid" class="names-grid"></div>
 
-    function showDetails(name) {
-        const data = playersData[name] || {age: "قريباً", h: "قريباً", w: "قريباً", t: "قريباً", m: "قريباً"};
-        document.getElementById("m-name").innerText = name;
-        document.getElementById("m-age").innerText = data.age;
-        document.getElementById("m-height").innerText = data.h;
-        document.getElementById("m-weight").innerText = data.w;
-        document.getElementById("m-titles").innerText = data.t;
-        document.getElementById("m-matches").innerText = data.m;
-        document.getElementById("myModal").style.display = "block";
-    }
-
-    function closeModal() { document.getElementById("myModal").style.display = "none"; }
-
-    // تشغيل الدوال
-    createButtons(nxtMen, "nxt-men");
-    createButtons(nxtWomen, "nxt-women");
-    createButtons(legends, "wwe-legends");
-</script>
-
-</body>
-</html>
+        <div class="
