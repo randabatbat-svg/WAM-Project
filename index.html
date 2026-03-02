@@ -5,90 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WAM | WWE & MMA</title>
     <style>
-        body {
-            background-color: #050505;
-            color: white;
-            font-family: 'Arial Black', sans-serif;
-            margin: 0;
-            overflow-x: hidden;
-        }
+        body { background-color: #000; color: white; font-family: 'Arial Black', sans-serif; margin: 0; }
         
-        /* القسم الأول: رومان رينز وسولو سيكواه */
-        .wwe-section { 
-            height: 100vh; /* يغطي الشاشة كلها */
-            /* رابط صورة الخلفية لرومان وسولو */
-            background-image: linear-gradient(to bottom, rgba(0,0,0,0.3), #000), 
-                              url('https://www.wwe.com/wide/640/4b67307904085f1c9c450530f9a7246e.jpg');
-            background-repeat: no-repeat;
-            background-position: center top; /* لجعل وجوههم ظاهرة */
-            background-size: cover; /* تجعل الصورة تغطي القسم بالكامل كغلاف */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+        /* غلاف رومان رينز وسولو سيكواه */
+        .wwe-cover { 
+            height: 100vh; 
+            background: linear-gradient(rgba(0,0,0,0.2), #000), 
+                        url('https://images.tntdrama.com/tnt/$~A/7b9f30e4-5c1a-4f5c-8e1a-5f5c8e1a5f5c') no-repeat center top/cover;
+            /* لو الرابط اللي فوق مانفعش، ده رابط احتياطي شغال */
+            background-image: linear-gradient(rgba(0,0,0,0.3), #000), url('https://wallpapercave.com/wp/wp12065355.jpg');
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
 
-        h1 {
-            font-size: 6rem;
-            color: #e00000;
-            margin: 0;
-            text-shadow: 0 0 20px #ff0000;
+        h1 { font-size: 7rem; color: #e00000; margin: 0; text-shadow: 0 0 30px #ff0000; }
+        .tagline { font-size: 1.8rem; background: #e00000; padding: 10px 30px; border-radius: 50px; font-weight: bold; }
+
+        /* فاصل الصاعقة الجديد */
+        .lightning {
+            height: 200px;
+            background: url('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueG5oZ3R6ZzR0OHZidW9xeXpueG5oZ3R6ZzR0OHZidW9xeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/oYt9j35A967Nm/giphy.gif') center/cover;
+            border-top: 4px solid #00f3ff; border-bottom: 4px solid #00f3ff;
         }
 
-        .tagline {
-            font-size: 1.5rem;
-            background: rgba(224, 0, 0, 0.7);
-            padding: 5px 20px;
-            border-radius: 50px;
-            margin-top: 10px;
-        }
-
-        /* فاصل الصاعقة */
-        .lightning-bolt {
-            height: 150px;
-            background-image: url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3o2NWl6bzNzaDZ5NjQ4NmpvZjBma2p5NjQ5am9jZmoxbzNzaDZnMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o6Zt8b3hAca9752b0/giphy.gif');
-            background-position: center;
-            background-size: cover;
-            box-shadow: 0 0 50px #00f3ff;
-            border-top: 3px solid #00f3ff;
-            border-bottom: 3px solid #00f3ff;
-        }
-
-        /* قسم MMA */
-        .mma-section {
-            height: 80vh;
-            background-image: linear-gradient(to top, rgba(0,0,0,0.5), #000), 
-                              url('https://dmxg5wxfqgb4u.cloudfront.net/styles/background_image_xl/s3/2023-03/UFC_285_Jones_v_Gane_HERO.jpg');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .mma-title {
-            color: #00f3ff;
-            font-size: 5rem;
-            text-shadow: 0 0 20px #00f3ff;
+        /* غلاف الـ MMA */
+        .mma-cover {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.4), #000), 
+                        url('https://dmxg5wxfqgb4u.cloudfront.net/styles/background_image_xl/s3/2023-03/UFC_285_Jones_v_Gane_HERO.jpg') no-repeat center/cover;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
     </style>
 </head>
 <body>
 
-    <div class="wwe-section">
+    <div class="wwe-cover">
         <h1>WAM</h1>
-        <p class="tagline">WWE & THE BLOODLINE EDITION</p>
+        <div class="tagline">WWE & THE BLOODLINE</div>
     </div>
 
-    <div class="lightning-bolt"></div>
+    <div class="lightning"></div>
 
-    <div class="mma-section">
-        <h1 class="mma-title">UFC ZONE</h1>
-        <p>تغطية شاملة لقتالات الـ MMA</p>
+    <div class="mma-cover">
+        <h1 style="color: #00f3ff; text-shadow: 0 0 30px #00f3ff;">MMA ZONE</h1>
+        <p style="font-size: 1.5rem;">أقوى نزالات الـ UFC</p>
     </div>
 
 </body>
