@@ -3,61 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WAM | Search Pro</title>
+    <title>WAM | محرك بحث الأساطير</title>
     <style>
-        body { background-color: #000; color: white; margin: 0; font-family: sans-serif; text-align: center; }
-        .search-container { padding: 50px; background: rgba(20, 20, 20, 0.9); border-bottom: 2px solid #e00000; }
-        input { padding: 15px; width: 60%; border-radius: 30px; border: none; font-size: 1.2rem; }
-        button { padding: 15px 30px; border-radius: 30px; border: none; background: #e00000; color: white; cursor: pointer; font-weight: bold; }
+        body { background-color: #000; color: white; margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; text-align: center; }
         
-        #results { display: flex; flex-wrap: wrap; justify-content: center; padding: 20px; }
-        .card { background: #1a1a1a; margin: 10px; padding: 20px; border-radius: 10px; width: 250px; border: 1px solid #333; }
-        .card img { width: 100%; border-radius: 5px; }
-        .card h3 { color: #e00000; }
+        /* تصميم منطقة البحث */
+        .search-container { 
+            padding: 60px 20px; 
+            background: linear-gradient(to bottom, #1a1a1a, #000);
+            border-bottom: 3px solid #e00000;
+        }
+        h1 { color: #e00000; font-size: 3rem; text-shadow: 0 0 15px #ff0000; }
+        
+        .search-box { position: relative; width: 80%; max-width: 600px; margin: 0 auto; }
+        
+        input { 
+            padding: 15px 25px; width: 100%; border-radius: 50px; border: 2px solid #333; 
+            font-size: 1.2rem; background: #111; color: white; outline: none; transition: 0.3s;
+        }
+        input:focus { border-color: #e00000; box-shadow: 0 0 15px #e00000; }
+
+        /* منطقة النتائج */
+        #results { 
+            display: flex; flex-wrap: wrap; justify-content: center; 
+            padding: 40px 20px; min-height: 200px; 
+        }
+        
+        .card { 
+            background: #111; margin: 15px; padding: 15px; border-radius: 15px; 
+            width: 280px; border: 1px solid #e00000; transition: transform 0.3s;
+            box-shadow: 0 5px 15px rgba(224, 0, 0, 0.2);
+        }
+        .card:hover { transform: translateY(-10px); }
+        .card img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
+        .card h3 { color: #e00000; margin: 10px 0; font-size: 1.5rem; }
+        .card p { font-size: 0.9rem; color: #ccc; line-height: 1.6; }
+        
+        .no-result { color: #666; font-style: italic; margin-top: 20px; }
     </style>
 </head>
 <body>
 
     <div class="search-container">
-        <h1>ابحث عن نجمك المفضل</h1>
-        <input type="text" id="searchInput" placeholder="اكتب اسم المصارع أو المقاتل بالإنجليزية...">
-        <button onclick="searchFighter()">بحث</button>
+        <h1>منصة WAM للبحث</h1>
+        <p>ابحث عن أساطير WWE و MMA (اكتب الاسم بالإنجليزية)</p>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="مثلاً: John Cena أو Roman Reigns..." oninput="checkEmpty()">
+        </div>
     </div>
 
     <div id="results">
-        </div>
+        <p class="no-result">اكتب اسم المصارع للبدء في البحث...</p>
+    </div>
 
     <script>
-        async function searchFighter() {
+        // وظيفة لمسح النتائج لو الخانة فضيت
+        function checkEmpty() {
             const query = document.getElementById('searchInput').value;
-            const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = "جاري البحث في الـ API...";
+            if (query.trim() === "") {
+                document.getElementById('results').innerHTML = '<p class="no-result">اكتب اسم المصارع للبدء في البحث...</p>';
+            } else {
+                searchFighter(query);
+            }
+        }
 
+        async function searchFighter(query) {
+            const resultsDiv = document.getElementById('results');
+            
             try {
-                // ملاحظة: سنستخدم API تجريبي لجلب البيانات
                 const response = await fetch(`https://www.thesportsdb.com/api/v1/json/3/searchplayers.php?p=${query}`);
                 const data = await response.json();
 
-                resultsDiv.innerHTML = ""; // مسح رسالة التحميل
-
                 if (data.player) {
+                    resultsDiv.innerHTML = ""; // مسح القديم
                     data.player.forEach(player => {
-                        if (player.strSport === "Fighting" || player.strSport === "MMA" || player.strTeam === "WWE") {
+                        // فلترة النتائج عشان نضمن إنهم قتال أو WWE
+                        if (player.strSport === "Fighting" || player.strTeam === "WWE" || player.strSport === "MMA") {
                             resultsDiv.innerHTML += `
                                 <div class="card">
-                                    <img src="${player.strThumb || 'https://via.placeholder.com/150'}" alt="${player.strPlayer}">
+                                    <img src="${player.strThumb || 'https://via.placeholder.com/300x300?text=No+Image'}" alt="${player.strPlayer}">
                                     <h3>${player.strPlayer}</h3>
-                                    <p>الرياضة: ${player.strSport}</p>
-                                    <p>الجنسية: ${player.strNationality}</p>
+                                    <p><b>الرياضة:</b> ${player.strSport === "Fighting" ? "مصارعة / قتال" : player.strSport}</p>
+                                    <p><b>الجنسية:</b> ${player.strNationality || 'غير معروف'}</p>
+                                    <p>${player.strDescriptionEN ? player.strDescriptionEN.substring(0, 100) + '...' : 'لا يوجد وصف متاح حالياً.'}</p>
                                 </div>
                             `;
                         }
                     });
-                } else {
-                    resultsDiv.innerHTML = "لم يتم العثور على نتائج. جرب اسم آخر مثل 'John Cena' أو 'Khabib'.";
+                    
+                    // لو ملقيناش حد في الفلترة
+                    if (resultsDiv.innerHTML === "") {
+                        resultsDiv.innerHTML = '<p class="no-result">لم نجد مصارعاً بهذا الاسم في فئة WWE أو MMA.</p>';
+                    }
                 }
             } catch (error) {
-                resultsDiv.innerHTML = "حدث خطأ في الاتصال بالـ API.";
+                console.log("Error fetching data");
             }
         }
     </script>
